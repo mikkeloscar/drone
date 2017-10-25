@@ -7,7 +7,6 @@ import (
 	"log"
 	"os"
 	"path"
-	"path/filepath"
 	"strings"
 	"time"
 
@@ -345,7 +344,11 @@ func exec(c *cli.Context) error {
 		if workspacePath == "" {
 			workspacePath = c.String("workspace-path")
 		}
-		dir, _ := filepath.Abs(filepath.Dir(file))
+		// dir, _ := filepath.Abs(filepath.Dir(file))
+		dir, err := os.Getwd()
+		if err != nil {
+			return err
+		}
 		volumes = append(volumes, dir+":"+path.Join(workspaceBase, workspacePath))
 	}
 
